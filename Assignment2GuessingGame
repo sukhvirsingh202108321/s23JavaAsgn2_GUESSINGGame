@@ -1,1 +1,93 @@
+package GuessingGameGUI;
 
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+public class GuessingGameGUI extends JFrame {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JLabel betLabel;
+    private JTextField betField;
+    private JLabel guessLabel;
+    private JTextField guessField;
+    private JButton playButton;
+    private JTextArea resultArea;
+    private int randomNumber;
+    private int playerBet;
+	
+    public GuessingGameGUI() {
+        
+        setTitle("Guessing Game with Betting");
+        setSize(300, 200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(4, 2));
+
+       
+        betLabel = new JLabel("Enter your bet:");
+        betField = new JTextField();
+        guessLabel = new JLabel("Enter your guess (1-10):");
+        guessField = new JTextField();
+        playButton = new JButton("Play");
+        resultArea = new JTextArea();
+        resultArea.setEditable(false);
+        JButton newGameButton = new JButton("New Game");
+        JButton quitButton = new JButton("Quit");
+        
+       
+        add(betLabel);
+        add(betField);
+        add(guessLabel);
+        add(guessField);
+        add(playButton);
+        add(resultArea);
+        add(newGameButton);
+        add(quitButton);
+        
+        newGameButton.setMnemonic('N');
+        quitButton.setMnemonic('Q');
+        
+       
+        
+        playButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                playGame();
+            }
+        });
+    }
+
+    private void playGame() {
+        
+        try {
+            playerBet = Integer.parseInt(betField.getText());
+            int playerGuess = Integer.parseInt(guessField.getText());
+
+            
+            randomNumber = new Random().nextInt(10) + 1;
+
+            
+            if (playerGuess == randomNumber) {
+                resultArea.setText("Congratulations! You guessed correctly!\nYou won " + playerBet + " coins.");
+            } else {
+                resultArea.setText("Sorry, the correct number was " + randomNumber + ".\nYou lost " + playerBet + " coins.");
+            }
+        } catch (NumberFormatException ex) {
+            resultArea.setText("Please enter valid numbers for bet and guess.");
+        }
+    }
+
+    public static void main(String[] args) {
+        
+        SwingUtilities.invokeLater(() -> {
+            GuessingGameGUI gui = new GuessingGameGUI();
+            gui.setVisible(true);
+        });
+    }
+}
